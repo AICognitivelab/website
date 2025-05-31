@@ -330,7 +330,12 @@
         <div class="modal-content">
             <button class="close-button" id="closeModalButton">&times;</button>
             <h3 class="text-3xl section-heading mb-6 text-center text-gray-900">Free Consultation</h3>
-            <form id="contactForm" class="space-y-4">
+            <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" class="space-y-4">
+                <input type="hidden" name="access_key" value="d4b3c183-518e-40a6-8e94-7da7fbedbbb5">
+                <!-- Web3Forms Redirect: After submission, Web3Forms will redirect to this URL.
+                     Important for non-JavaScript fallback, and can be used for analytics. -->
+                <input type="hidden" name="redirect" value="YOUR_WEBSITE_URL_HERE?form_status=success">
+                
                 <div>
                     <label for="name" class="block text-gray-700 text-sm font-medium mb-1">Your Name</label>
                     <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required>
@@ -367,6 +372,7 @@
                     <label for="message" class="block text-gray-700 text-sm font-medium mb-1">Your Message</label>
                     <textarea id="message" name="message" class="form-textarea" placeholder="What are the 3 challenges your team faces in achieving its daily objectives?" required></textarea>
                 </div>
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 <div class="text-center">
                     <button type="submit" class="submit-button">Send Message</button>
                 </div>
@@ -388,95 +394,116 @@
         const closeModalButton = document.getElementById('closeModalButton');
         const heroCtaButton = document.getElementById('heroCtaButton');
         const footerCtaButton = document.getElementById('footerCtaButton');
-        const roiCtaButton = document.getElementById('roiCtaButton'); // Get the new ROI button
-        const contactForm = document.getElementById('contactForm');
+        const roiCtaButton = document.getElementById('roiCtaButton');
+        const contactForm = document.getElementById('contactForm'); 
 
         // Get message box elements
         const messageBox = document.getElementById('messageBox');
         const messageBoxText = document.getElementById('messageBoxText');
         const closeMessageBoxButton = document.getElementById('closeMessageBoxButton');
 
-        // Function to show the modal
+        // Function to show the modal (contact form)
         function showModal() {
             contactModal.classList.add('show');
         }
 
-        // Function to hide the modal
+        // Function to hide the modal (contact form)
         function hideModal() {
             contactModal.classList.remove('show');
             contactForm.reset(); // Clear form fields on close
         }
 
-        // Function to show the message box with dynamic text
+        // Function to show the custom message box (e.g., "Thank You!")
         function showMessageBox(message) {
             messageBoxText.textContent = message;
             messageBox.classList.add('show');
         }
 
-        // Function to hide the message box
+        // Function to hide the custom message box
         function hideMessageBox() {
             messageBox.classList.remove('show');
         }
 
-        // Event listeners for CTA buttons
+        // Event listeners for CTA buttons to open the contact modal
         heroCtaButton.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default anchor behavior
+            e.preventDefault();
             showModal();
         });
         footerCtaButton.addEventListener('click', function(e) {
             e.preventDefault();
             showModal();
         });
-        roiCtaButton.addEventListener('click', function(e) { // Event listener for the new ROI button
+        roiCtaButton.addEventListener('click', function(e) {
             e.preventDefault();
             showModal();
         });
 
-        // Event listener for close modal button
+        // Event listener for the close button inside the contact modal
         closeModalButton.addEventListener('click', hideModal);
 
-        // Event listener to close modal when clicking outside
+        // Event listener to close the contact modal when clicking outside its content
         contactModal.addEventListener('click', function(e) {
             if (e.target === contactModal) {
                 hideModal();
             }
         });
 
-        // Event listener for form submission
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent actual form submission
-
-            // Retrieve form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const organizationSize = document.getElementById('organizationSize').value;
-            const interestedIn = document.getElementById('interestedIn').value; 
-            const phone = document.getElementById('phone').value;
-            const message = document.getElementById('message').value;
-
-            // Log form data (in a real app, this would be sent to a server)
-            console.log('Form submitted!');
-            console.log('Name:', name);
-            console.log('Email:', email);
-            console.log('Organization Size:', organizationSize);
-            console.log('Interested In:', interestedIn); 
-            console.log('Phone:', phone);
-            console.log('Message:', message);
-
-            // Determine insight message based on organization size
-            let insightMessage = "Your message has been sent successfully. Entrepreneurs find our solutions invaluable for accelerating digital transformation.";
-            
-            hideModal(); // Hide the contact form modal
-            showMessageBox(insightMessage); // Show the thank you message with insight
-        });
-
-        // Event listener for close message box button
+        // Event listener for the close button inside the message box
         closeMessageBoxButton.addEventListener('click', hideMessageBox);
 
-        // Event listener to close message box when clicking outside
+        // Event listener to close the message box when clicking outside its content
         messageBox.addEventListener('click', function(e) {
             if (e.target === messageBox) {
                 hideMessageBox();
+            }
+        });
+
+        // --- Core Logic: Handle form submission with AJAX to Web3Forms ---
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent the browser's default form submission (page reload)
+
+            // 1. Immediately hide the contact form modal
+            hideModal(); 
+
+            // 2. Show the "Thank You!" message to the user
+            const insightMessage = "Your message has been sent successfully. Entrepreneurs find our solutions invaluable for accelerating digital transformation.";
+            showMessageBox(insightMessage);
+
+            // 3. Collect all form data, including the hidden Web3Forms fields
+            const formData = new FormData(contactForm);
+
+            // For debugging: log the data being sent (this won't be visible to the end-user)
+            console.log('Attempting to send form data to Web3Forms:');
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
+            // 4. Send the form data to Web3Forms API asynchronously using fetch
+            try {
+                const response = await fetch(contactForm.action, {
+                    method: contactForm.method, // This will be "POST"
+                    body: formData, // FormData automatically sets the correct Content-Type (multipart/form-data)
+                    // Web3Forms typically expects a JSON response, so we can set the Accept header
+                    headers: {
+                        'Accept': 'application/json' 
+                    }
+                });
+
+                const result = await response.json(); // Parse the JSON response from Web3Forms
+
+                if (result.success) {
+                    console.log('Web3Forms submission successful:', result.message);
+                    // The "Thank You!" message is already displayed, no further UI action needed here.
+                } else {
+                    console.error('Web3Forms submission failed:', result.message);
+                    // Optional: If you want to show an error message to the user if submission fails,
+                    // you could update the messageBoxText here.
+                    // Example: messageBoxText.textContent = "There was an error sending your message. Please try again later.";
+                }
+            } catch (error) {
+                console.error('Network or other error during Web3Forms submission:', error);
+                // Optional: Handle network errors or other exceptions
+                // Example: messageBoxText.textContent = "Network error. Please check your internet connection and try again.";
             }
         });
     </script>
