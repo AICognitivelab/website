@@ -368,32 +368,12 @@
                 <input type="hidden" name="access_key" value="d4b3c183-518e-40a6-8e94-7da7fbedbbb5">
 
                 <div>
-                    <label for="name" class="block text-gray-700 text-sm font-medium mb-1">Your Name</label>
+                    <label for="name" class="block text-gray-700 text-sm font-medium mb-1">Name<span class="text-red-500">*</span></label>
                     <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required>
                 </div>
                 <div>
-                    <label for="email" class="block text-gray-700 text-sm font-medium mb-1">Your Email</label>
+                    <label for="email" class="block text-gray-700 text-sm font-medium mb-1">Email<span class="text-red-500">*</span></label>
                     <input type="email" id="email" name="email" class="form-input" placeholder="john.doe@example.com" required>
-                </div>
-                <div>
-                    <label for="organizationSize" class="block text-gray-700 text-sm font-medium mb-1">Organization Size</label>
-                    <select id="organizationSize" name="organizationSize" class="form-select" required>
-                        <option value="" disabled selected>Select an option</option>
-                        <option value="emerging">1-50</option>
-                        <option value="growing">51-500</option>
-                        <option value="enterprise">500+</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="interestedIn" class="block text-gray-700 text-sm font-medium mb-1">Interested In</label>
-                    <select id="interestedIn" name="interestedIn" class="form-select" required>
-                        <option value="" disabled selected>Select an option</option>
-                        <option value="business-intelligence">Business Intelligence</option>
-                        <option value="workflow-automation">Automation</option>
-                        <option value="mobile-apps">Mobile Apps</option>
-                        <option value="ai-chatbots">AI Chatbots</option>
-                        <option value="cohesive-integration">Cohesive integration of 2 or more products</option>
-                    </select>
                 </div>
                 <div>
                     <label for="phone" class="block text-gray-700 text-sm font-medium mb-1">Phone Number (Optional)</label>
@@ -401,7 +381,31 @@
                     <div id="phoneError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid phone number (digits and '+' only).</div>
                 </div>
                 <div>
-                    <label for="message" class="block text-gray-700 text-sm font-medium mb-1">Your Message</label>
+                    <label for="formattedConsultationDate" class="block text-gray-700 text-sm font-medium mb-1">Date</label>
+                    <input type="text" id="formattedConsultationDate" name="submissionDate" class="form-input bg-gray-100" readonly>
+                </div>
+                <div>
+                    <label for="organizationSize" class="block text-gray-700 text-sm font-medium mb-1">Organization Size<span class="text-red-500">*</span></label>
+                    <select id="organizationSize" name="organizationSize" data-w3f-field="Organization Size" class="form-select" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="1-50">1-50</option>
+                        <option value="51-500">51-500</option>
+                        <option value="500+">500+</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="interestedIn" class="block text-gray-700 text-sm font-medium mb-1">Interested In<span class="text-red-500">*</span></label>
+                    <select id="interestedIn" name="interestedIn" data-w3f-field="Interested In" class="form-select" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Business Intelligence">Business Intelligence</option>
+                        <option value="Automation">Automation</option>
+                        <option value="Mobile Apps">Mobile Apps</option>
+                        <option value="AI Chatbots">AI Chatbots</option>
+                        <option value="Cohesive integration of 2 or more products">Cohesive integration of 2 or more products</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="message" class="block text-gray-700 text-sm font-medium mb-1">Your Message<span class="text-red-500">*</span></label>
                     <textarea id="message" name="message" class="form-textarea" placeholder="What are the 3 challenges your team faces in achieving its daily objectives?" required></textarea>
                 </div>
 
@@ -447,9 +451,15 @@
         // Get loading overlay element
         const loadingOverlay = document.getElementById('loadingOverlay');
 
+        // Get new date input elements
+        const formattedConsultationDateInput = document.getElementById('formattedConsultationDate');
+
+
         // Function to show the modal
         function showModal() {
             contactModal.classList.add('show');
+            // Set today's date when the modal is shown
+            setTodayDateForSubmission();
         }
 
         // Function to hide the modal
@@ -457,6 +467,7 @@
             contactModal.classList.remove('show');
             contactForm.reset(); // Clear form fields on close
             phoneError.classList.add('hidden'); // Hide phone error on modal close
+            // No need to clear formattedConsultationDateInput as it's set on showModal
         }
 
         // Function to show the message box with dynamic text
@@ -493,6 +504,17 @@
                 phoneError.classList.add('hidden'); // Hide error
                 return true;
             }
+        }
+
+        // Function to set today's date in 'mmm-dd-yyyy' format for submission
+        function setTodayDateForSubmission() {
+            const today = new Date();
+            const options = { month: 'short', day: '2-digit', year: 'numeric' };
+            const formattedDateParts = today.toLocaleDateString('en-US', options).split(' ');
+            const month = formattedDateParts[0];
+            const day = formattedDateParts[1].replace(',', '');
+            const year = formattedDateParts[2];
+            formattedConsultationDateInput.value = `${month}-${day}-${year}`; // Changed to mmm-dd-yyyy
         }
 
         // Event listeners for CTA buttons
@@ -578,6 +600,10 @@
 
         // Real-time validation for phone number as user types
         phoneInput.addEventListener('input', validatePhone);
+
+        // Initial call to set today's date when the page loads (or script runs)
+        // This ensures the hidden field has a value even if the modal isn't opened immediately.
+        setTodayDateForSubmission();
     </script>
 </body>
 </html>
