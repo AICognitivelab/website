@@ -192,10 +192,6 @@
     </style>
 </head>
 <body class="antialiased">
-    <script>
-        // Immediately redirect the user when the page loads
-        window.location.href = "https://yHS9OR.short.gy/Advanced-Digital-Transformation";
-    </script>
     <div class="container min-h-screen flex flex-col items-center justify-center py-16">
         <header class="text-center mb-20 px-4">
             <h1 class="text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-900 mb-8 leading-tight">
@@ -473,7 +469,6 @@
                 hideLoadingOverlay();
 
                 if (response.ok) {
-                    // Reverted change: Show message box instead of redirecting
                     showMessageBox("Success!", "Your message has been sent successfully! We will get back to you shortly.", "success");
                     contactForm.reset();
                     setTodayDateForSubmission();
