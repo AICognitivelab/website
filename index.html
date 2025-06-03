@@ -205,7 +205,7 @@
         <section class="hero-gradient text-white p-12 sm:p-16 md:p-20 rounded-4xl shadow-2xl mb-20 w-full max-w-6xl text-center">
             <h2 class="text-4xl sm:text-5xl font-bold mb-8">Your Business, Accelerated.</h2>
             <p class="text-2xl sm:text-3xl font-semibold leading-relaxed max-w-4xl mx-auto">
-                "Manual tasks draining your budget and team? We build custom digital solutions that <strong class="text-yellow-300">reduce operational costs by up to 80%, boost productivity by 25% and deliver real time profit insights.</strong> Automate your success."
+                Manual tasks draining your budget and team? We build custom digital solutions that <strong class="text-yellow-300">reduce operational costs by up to 80%, boost productivity by 25% and deliver real time profit insights.</strong> Automate your success.
             </p>
             <a href="#contactFormContainer" id="heroCtaButton" class="cta-button mt-10 inline-block">Start Saving Today</a>
         </section>
@@ -282,11 +282,23 @@
                 </div>
             </div>
 
-            <div class="bg-blue-100 p-10 rounded-2xl shadow-lg text-center mb-10"> <h3 class="text-4xl section-heading mb-6 text-blue-800">Overall Impact: Quantifiable ROI</h3>
+            <section id="whitepaper-section" class="bg-indigo-700 text-white p-10 rounded-2xl shadow-lg text-center mb-10">
+                <h3 class="text-4xl sm:text-5xl font-bold mb-6">Discover Profound Perspectives: Download Our Whitepaper!</h3>
+                <p class="text-xl text-indigo-100 leading-relaxed max-w-4xl mx-auto mb-4">
+                    Dive into our comprehensive whitepaper, "Integrated Enterprise — Unified approach to Digital Transformation", to discover detailed strategies on achieving remarkable ROI and operational efficiency through advanced digital solutions.
+                </p>
+                <p class="text-lg text-indigo-200 mb-8">
+                    *Fill out free consultation form below to get instant access*
+                </p>
+                <a href="#contactFormContainer" id="whitepaperCtaButton" class="cta-button inline-block bg-yellow-400 hover:bg-yellow-500 text-indigo-900">
+                    Get Your Free Whitepaper
+                </a>
+            </section>
+            <div class="bg-blue-100 p-10 rounded-2xl shadow-lg text-center mb-10">
+                <h3 class="text-4xl section-heading mb-6 text-blue-800">Overall Impact: Quantifiable ROI</h3>
                 <p class="text-xl text-gray-800 leading-relaxed max-w-4xl mx-auto">
                     A 2024 Forrester study found an organization experienced a staggering <strong class="text-blue-700">224% ROI over three years</strong>, with an NPV of <strong class="text-blue-700">$81.7M</strong> and a payback period of <strong class="text-blue-700">under six months</strong>.
                 </p>
-                
                 <p class="text-sm text-gray-600 mt-6 max-w-4xl mx-auto">
                     <strong>ROI (Return on Investment):</strong> The percentage of profit you get back compared to what you invested. A higher percentage means a better return.
                 </p>
@@ -303,11 +315,14 @@
                 </p>
             </section>
 
-            <section id="contact" class="w-full max-w-4xl mx-auto py-10 pb-5 flex flex-col items-center"> <h2 class="text-5xl sm:text-6xl section-heading mb-8 text-center">Begin Digital Transformation</h2>
+            <section id="contact" class="w-full max-w-4xl mx-auto py-10 pb-5 flex flex-col items-center">
+                <h2 class="text-5xl sm:text-6xl section-heading mb-8 text-center">Begin Digital Transformation</h2>
                 <p class="text-xl text-gray-700 mb-10 leading-relaxed text-center">Ready to unlock new levels of operational excellence and returns? Contact us today for a personalized consultation.</p>
                 <a href="#contactFormContainer" id="footerCtaButton" class="cta-button inline-block">Get Your Free Consultation</a>
             </section>
-        </section> <div id="contactFormContainer" class="w-full max-w-4xl mx-auto bg-white p-8 sm:p-10 rounded-2xl shadow-xl mt-8 mb-10"> <h3 class="text-3xl section-heading mb-6 text-center text-gray-900">Free Consultation Form</h3>
+        </section>
+        <div id="contactFormContainer" class="w-full max-w-4xl mx-auto bg-white p-8 sm:p-10 rounded-2xl shadow-xl mt-8 mb-10">
+            <h3 class="text-3xl section-heading mb-6 text-center text-gray-900">Free Consultation Form</h3>
             <form id="contactForm" class="space-y-4">
                 <input type="hidden" name="access_key" value="d4b3c183-518e-40a6-8e94-7da7fbedbbb5">
 
@@ -353,6 +368,13 @@
                     <textarea id="message" name="message" class="form-textarea" placeholder="What are the 3 challenges your team faces in achieving its daily objectives?" required></textarea>
                 </div>
 
+                <div class="flex items-center mb-4">
+                    <input type="checkbox" id="downloadWhitepaper" name="downloadWhitepaper" class="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="downloadWhitepaper" class="ml-2 block text-gray-900 text-base">
+                        Yes, I'd like to download whitepaper.
+                    </label>
+                </div>
+
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
                 <div class="text-center">
@@ -361,13 +383,15 @@
             </form>
         </div>
 
-        <footer class="text-center mt-8 text-gray-500 text-sm px-4"> <p>&copy; 2025 AICognitivelab. All rights reserved.</p>
+        <footer class="text-center mt-8 text-gray-500 text-sm px-4">
+            <p>&copy; 2025 AICognitivelab. All rights reserved.</p>
         </footer>
     </div>
 
     <div id="messageBox" class="message-box-overlay">
         <div class="message-box-content">
-            <h3 class="text-2xl section-heading mb-4 text-gray-900" id="messageTitle"></h3> <p id="messageBoxText" class="text-gray-700"></p>
+            <h3 class="text-2xl section-heading mb-4 text-gray-900" id="messageTitle"></h3>
+            <p id="messageBoxText" class="text-gray-700"></p>
             <button class="message-box-button" id="closeMessageBoxButton">Close</button>
         </div>
     </div>
@@ -381,6 +405,7 @@
         const heroCtaButton = document.getElementById('heroCtaButton');
         const footerCtaButton = document.getElementById('footerCtaButton');
         const roiCtaButton = document.getElementById('roiCtaButton');
+        const whitepaperCtaButton = document.getElementById('whitepaperCtaButton'); // New whitepaper CTA button
         const contactFormContainer = document.getElementById('contactFormContainer'); // The inline form container
 
         const contactForm = document.getElementById('contactForm');
@@ -392,7 +417,10 @@
         const phoneInput = document.getElementById('phone');
         const phoneError = document.getElementById('phoneError');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const downloadWhitepaperCheckbox = document.getElementById('downloadWhitepaper'); // New checkbox element
 
+        // Define the whitepaper download link
+        const whitepaperDownloadLink = 'https://raw.githubusercontent.com/AICognitivelab/website/6934147984a0a30e6ac77949835284e2fa418271/Whitepaper.pdf'; // Updated with your GitHub raw PDF link
 
         // Function to set today's date in 'mmm-dd-yyyy' format for submission
         function setTodayDateForSubmission() {
@@ -422,6 +450,14 @@
         footerCtaButton.addEventListener('click', function(e) {
             e.preventDefault();
             contactFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        // Event listener for the new whitepaper CTA button
+        whitepaperCtaButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            contactFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Optionally, pre-check the whitepaper download checkbox when this CTA is clicked
+            downloadWhitepaperCheckbox.checked = true;
         });
 
         // Function to validate phone number input
@@ -469,7 +505,12 @@
                 hideLoadingOverlay();
 
                 if (response.ok) {
-                    showMessageBox("Success!", "Your message has been sent successfully! We will get back to you shortly.", "success");
+                    let successMessage = "Your message has been sent successfully! We will get back to you shortly.";
+                    // If the whitepaper checkbox was checked, add the download link to the message
+                    if (downloadWhitepaperCheckbox.checked) {
+                        successMessage += `<br><br>Thank you for your interest! You can download your whitepaper here: <a href="${whitepaperDownloadLink}" target="_blank" class="text-blue-600 underline font-semibold">Download Whitepaper</a>`;
+                    }
+                    showMessageBox("Success!", successMessage, "success");
                     contactForm.reset();
                     setTodayDateForSubmission();
                 } else {
@@ -485,7 +526,8 @@
         // Message Box Functions
         function showMessageBox(title, text, type) {
             messageTitle.textContent = title;
-            messageBoxText.textContent = text;
+            // Use innerHTML for messageBoxText to allow for HTML links
+            messageBoxText.innerHTML = text;
             messageTitle.className = "text-2xl section-heading mb-4 " + (type === "success" ? "text-green-600" : "text-red-600");
             messageBox.classList.add('show');
         }
