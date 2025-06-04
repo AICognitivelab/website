@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unlock Your Business Potential with Advanced Digital Solutions</title>
+    <title>Unlock Your Business Potential with AI Powered Digital Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom font import - Inter */
@@ -239,7 +239,6 @@
     </style>
 </head>
 <body class="antialiased">
-    <!-- Fixed Navigation Bar -->
     <nav class="fixed-nav">
         <a href="#our-services" class="nav-link" id="navOurServices">Our Services</a>
         <a href="#contactFormContainer" class="nav-link" id="navGetStarted">Get Started</a>
@@ -248,7 +247,7 @@
     <div class="container min-h-screen flex flex-col items-center justify-center py-16">
         <header id="top-of-page" class="text-center mb-20 px-4">
             <h1 class="text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-900 mb-8 leading-tight">
-                Unlock Your Business Potential <br class="hidden sm:inline-block">with <span class="text-blue-600">Advanced Digital Solutions</span>
+                Unlock Your Business Potential <br class="hidden sm:inline-block">with <span class="text-blue-600">AI Powered Digital Solutions</span>
             </h1>
             <p class="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
                 Transform operations, boost efficiency and drive significant financial gains with our tailored solutions.
@@ -266,7 +265,7 @@
         <section id="our-services" class="w-full max-w-7xl px-4">
             <h2 class="text-5xl sm:text-6xl section-heading text-center mb-16">Value Proposition</h2>
             <p class="text-xl text-gray-700 text-center mb-16 leading-relaxed max-w-5xl mx-auto">
-                Our advanced digital solutions offer a <span class="text-blue-600">rapid, cost effective path to significant savings and increased profitability</span>. We empower your business through <span class="text-blue-600">one-stop cohesive integration</span> of <span>Business Intelligence</span>, <span>Automation</span>, <span>Mobile Apps</span> and <span>AI Chatbots</span>.
+                Our AI powered digital solutions offer a <span class="text-blue-600">rapid, cost effective path to significant savings and increased profitability</span>. We empower your business through <span class="text-blue-600">one-stop cohesive integration</span> of <span>Business Intelligence</span>, <span>Automation</span>, <span>Mobile Apps</span> and <span>AI Chatbots</span>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
@@ -473,7 +472,6 @@
         const downloadWhitepaperCheckbox = document.getElementById('downloadWhitepaper'); // New checkbox element
 
         // Navigation links
-        const navWhyUs = document.getElementById('navWhyUs'); // This element is now removed from HTML
         const navOurServices = document.getElementById('navOurServices');
         const navGetStarted = document.getElementById('navGetStarted');
 
@@ -534,12 +532,6 @@
         });
 
         // Event Listeners for Navigation Bar Buttons
-        // Removed navWhyUs event listener as the button is removed
-        // navWhyUs.addEventListener('click', function(e) {
-        //     e.preventDefault();
-        //     scrollToSection('top-of-page'); // Scroll to the very top header
-        // });
-
         navOurServices.addEventListener('click', function(e) {
             e.preventDefault();
             scrollToSection('our-services'); // Scroll to the Value Proposition section
@@ -600,25 +592,24 @@
                     if (downloadWhitepaperCheckbox.checked) {
                         successMessage += `<br><br>Thank you for your interest! You can download your whitepaper here: <a href="${whitepaperDownloadLink}" target="_blank" class="text-blue-600 underline font-semibold">Download Whitepaper</a>`;
                     }
-                    showMessageBox("Success!", successMessage, "success");
-                    contactForm.reset();
-                    setTodayDateForSubmission();
+                    showMessageBox("Success!", successMessage); // Pass the updated message
+                    contactForm.reset(); // Reset form fields on successful submission
+                    setTodayDateForSubmission(); // Reset the date field
                 } else {
-                    const data = await response.json();
-                    showMessageBox("Error!", data.message || "Something went wrong. Please try again.", "error");
+                    const errorData = await response.json();
+                    showMessageBox("Error!", errorData.message || "Something went wrong. Please try again.");
                 }
             } catch (error) {
                 hideLoadingOverlay();
-                showMessageBox("Error!", "Network error. Please check your connection and try again.", "error");
+                showMessageBox("Error!", "Failed to send message. Please check your network connection and try again.");
+                console.error('Submission error:', error);
             }
         });
 
         // Message Box Functions
-        function showMessageBox(title, text, type) {
+        function showMessageBox(title, message) {
             messageTitle.textContent = title;
-            // Use innerHTML for messageBoxText to allow for HTML links
-            messageBoxText.innerHTML = text;
-            messageTitle.className = "text-2xl section-heading mb-4 " + (type === "success" ? "text-green-600" : "text-red-600");
+            messageBoxText.innerHTML = message; // Use innerHTML to allow for HTML tags in the message
             messageBox.classList.add('show');
         }
 
@@ -627,11 +618,6 @@
         }
 
         closeMessageBoxButton.addEventListener('click', hideMessageBox);
-        messageBox.addEventListener('click', function(e) {
-            if (e.target === messageBox) {
-                hideMessageBox();
-            }
-        });
 
         // Loading Overlay Functions
         function showLoadingOverlay() {
@@ -641,9 +627,6 @@
         function hideLoadingOverlay() {
             loadingOverlay.classList.remove('show');
         }
-
-        // Real-time validation for phone number as user types
-        phoneInput.addEventListener('input', validatePhone);
     </script>
 </body>
 </html>
