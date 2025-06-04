@@ -476,7 +476,8 @@
         const navGetStarted = document.getElementById('navGetStarted');
 
         // Define the whitepaper download link
-        const whitepaperDownloadLink = 'https://raw.githubusercontent.com/AICognitivelab/website/6934147984a0a30e6ac77949835284e2fa418271/Whitepaper.pdf'; // Updated with your GitHub raw PDF link
+        // **THIS IS THE UPDATED LINE**
+        const whitepaperDownloadLink = 'https://raw.githubusercontent.com/AICognitivelab/website/b02c46336b399bdc2e2fcc84a0e7e694413c2ee7/Whitepaper.pdf';
 
         // Function to set today's date in 'mmm-dd-yyyy' format for submission
         function setTodayDateForSubmission() {
@@ -594,32 +595,31 @@
                     }
                     showMessageBox("Success!", successMessage); // Pass the updated message
                     contactForm.reset(); // Reset form fields on successful submission
-                    setTodayDateForSubmission(); // Reset the date field
+                    setTodayDateForSubmission(); // Re-set the date after reset
                 } else {
                     const errorData = await response.json();
-                    showMessageBox("Error!", errorData.message || "Something went wrong. Please try again.");
+                    let errorMessage = errorData.message || "There was an error sending your message. Please try again.";
+                    showMessageBox("Error!", errorMessage);
                 }
             } catch (error) {
                 hideLoadingOverlay();
-                showMessageBox("Error!", "Failed to send message. Please check your network connection and try again.");
+                showMessageBox("Error!", "Failed to connect to the server. Please check your internet connection and try again.");
                 console.error('Submission error:', error);
             }
         });
 
-        closeMessageBoxButton.addEventListener('click', function() {
-            hideMessageBox();
+        // Message Box functionality
+        closeMessageBoxButton.addEventListener('click', () => {
+            messageBox.classList.remove('show');
         });
 
         function showMessageBox(title, message) {
-            messageTitle.innerHTML = title; // Use innerHTML to allow for HTML tags like <a>
-            messageBoxText.innerHTML = message; // Use innerHTML to allow for HTML tags like <a>
+            messageTitle.textContent = title;
+            messageBoxText.innerHTML = message; // Use innerHTML to allow for the link
             messageBox.classList.add('show');
         }
 
-        function hideMessageBox() {
-            messageBox.classList.remove('show');
-        }
-
+        // Loading Overlay functionality
         function showLoadingOverlay() {
             loadingOverlay.classList.add('show');
         }
@@ -627,6 +627,9 @@
         function hideLoadingOverlay() {
             loadingOverlay.classList.remove('show');
         }
+
+        // Validate phone input on keyup
+        phoneInput.addEventListener('keyup', validatePhone);
     </script>
 </body>
 </html>
