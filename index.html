@@ -293,7 +293,7 @@
                         Automation
                     </h3>
                     <p class="text-gray-800 mb-4 leading-relaxed">
-                        Introduce AI driven automation for repetitive tasks and interconnected processes that creates capacity to focus on impactful contributions.
+                        Introduce AI driven automation for manual tasks and repetitive processes that create capacity to focus on impactful contributions.
                     </p>
                     <ul class="list-disc-custom pl-6 space-y-4 text-lg text-gray-700">
                         <li><strong class="font-medium">Automate Manual Work — </strong> Reduce a 6 week HR process to just <strong class="text-green-600">one hour</strong>.</li>
@@ -606,10 +606,13 @@
             }
         });
 
-        // Message Box Functions
+        closeMessageBoxButton.addEventListener('click', function() {
+            hideMessageBox();
+        });
+
         function showMessageBox(title, message) {
-            messageTitle.textContent = title;
-            messageBoxText.innerHTML = message; // Use innerHTML to allow for HTML tags in the message
+            messageTitle.innerHTML = title; // Use innerHTML to allow for HTML tags like <a>
+            messageBoxText.innerHTML = message; // Use innerHTML to allow for HTML tags like <a>
             messageBox.classList.add('show');
         }
 
@@ -617,9 +620,6 @@
             messageBox.classList.remove('show');
         }
 
-        closeMessageBoxButton.addEventListener('click', hideMessageBox);
-
-        // Loading Overlay Functions
         function showLoadingOverlay() {
             loadingOverlay.classList.add('show');
         }
