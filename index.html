@@ -240,6 +240,7 @@
 </head>
 <body class="antialiased">
     <nav class="fixed-nav">
+        <a href="#" class="nav-link" id="navAboutUs">About Us</a> <!-- New About Us button -->
         <a href="#our-services" class="nav-link" id="navOurServices">Our Services</a>
         <a href="#contactFormContainer" class="nav-link" id="navGetStarted">Get Started</a>
     </nav>
@@ -452,6 +453,19 @@
         <div class="spinner"></div>
     </div>
 
+    <!-- New Dialog Box HTML for About Us -->
+    <div id="aboutUsDialog" class="message-box-overlay">
+        <div class="message-box-content">
+            <h3 class="text-2xl section-heading mb-4 text-blue-700">About Us</h3>
+            <p id="aboutUsContent" class="text-gray-700 text-left leading-relaxed">
+                I'm Mohammed — founder of AI Cognitive Lab. With over 17 years of experience in AI, Business Analytics and Computer Science, my vision is to empower businesses by implementing AI powered solutions. Our goal is to deliver real time insights, smart automation, customized mobile apps and intelligent customer experiences. Whether you're an individual entrepreneur or a large enterprise, we partner to deliver an AI enabled digital ecosystem.
+                <br><br>
+                Explore our website to see how AI can transform your business. I also encourage you to complete free consultation form for a personalized discovery session with me, the founder, and gain exclusive access to our whitepaper, offering deeper insights into the cohesive integration of AI powered digital solutions.
+            </p>
+            <button class="message-box-button" id="closeAboutUsDialogButton">Close</button>
+        </div>
+    </div>
+
     <script>
         // Get elements
         const heroCtaButton = document.getElementById('heroCtaButton');
@@ -475,8 +489,12 @@
         const navOurServices = document.getElementById('navOurServices');
         const navGetStarted = document.getElementById('navGetStarted');
 
+        // New About Us elements
+        const navAboutUs = document.getElementById('navAboutUs');
+        const aboutUsDialog = document.getElementById('aboutUsDialog');
+        const closeAboutUsDialogButton = document.getElementById('closeAboutUsDialogButton');
+
         // Define the whitepaper download link
-        // **THIS IS THE UPDATED LINE**
         const whitepaperDownloadLink = 'https://raw.githubusercontent.com/AICognitivelab/website/b02c46336b399bdc2e2fcc84a0e7e694413c2ee7/Whitepaper.pdf';
 
         // Function to set today's date in 'mmm-dd-yyyy' format for submission
@@ -543,6 +561,24 @@
             scrollToSection('contactFormContainer'); // Scroll to the Contact Form
         });
 
+        // Event Listener for the new About Us button
+        navAboutUs.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            aboutUsDialog.classList.add('show');
+        });
+
+        // Event Listener to close the About Us dialog
+        closeAboutUsDialogButton.addEventListener('click', function() {
+            aboutUsDialog.classList.remove('show');
+        });
+
+        // Optional: Close About Us dialog when clicking outside of it
+        aboutUsDialog.addEventListener('click', function(e) {
+            if (e.target === aboutUsDialog) {
+                aboutUsDialog.classList.remove('show');
+            }
+        });
+
         // Function to validate phone number input
         function validatePhone() {
             const phoneValue = phoneInput.value;
@@ -598,28 +634,37 @@
                     setTodayDateForSubmission(); // Re-set the date after reset
                 } else {
                     const errorData = await response.json();
-                    let errorMessage = errorData.message || "There was an error sending your message. Please try again.";
-                    showMessageBox("Error!", errorMessage);
+                    // Consolidated error handling for any non-OK responses
+                    console.error('Submission Error:', errorData);
+                    showMessageBox("Error!", `There was a problem sending your message: ${errorData.message || 'Unknown error.'}`);
                 }
             } catch (error) {
                 hideLoadingOverlay();
-                showMessageBox("Error!", "Failed to connect to the server. Please check your internet connection and try again.");
-                console.error('Submission error:', error);
+                console.error('Network or submission error:', error);
+                showMessageBox("Error!", "Could not connect to the server. Please check your internet connection and try again.");
             }
         });
 
-        // Message Box functionality
-        closeMessageBoxButton.addEventListener('click', () => {
-            messageBox.classList.remove('show');
-        });
-
+        // Function to show custom message box
         function showMessageBox(title, message) {
             messageTitle.textContent = title;
-            messageBoxText.innerHTML = message; // Use innerHTML to allow for the link
+            messageBoxText.innerHTML = message; // Use innerHTML to allow for HTML links
             messageBox.classList.add('show');
         }
 
-        // Loading Overlay functionality
+        // Event listener for closing the general message box
+        closeMessageBoxButton.addEventListener('click', function() {
+            messageBox.classList.remove('show');
+        });
+
+        // Optional: Close message box when clicking outside of it
+        messageBox.addEventListener('click', function(e) {
+            if (e.target === messageBox) {
+                messageBox.classList.remove('show');
+            }
+        });
+
+        // Function to show and hide loading overlay
         function showLoadingOverlay() {
             loadingOverlay.classList.add('show');
         }
@@ -627,9 +672,6 @@
         function hideLoadingOverlay() {
             loadingOverlay.classList.remove('show');
         }
-
-        // Validate phone input on keyup
-        phoneInput.addEventListener('keyup', validatePhone);
     </script>
 </body>
 </html>
