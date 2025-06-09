@@ -266,7 +266,7 @@
         <section id="our-services" class="w-full max-w-7xl px-4">
             <h2 class="text-5xl sm:text-6xl section-heading text-center mb-16">Value Proposition</h2>
             <p class="text-xl text-gray-700 text-center mb-16 leading-relaxed max-w-5xl mx-auto">
-                Our AI powered digital solutions offer a <span class="text-blue-600">rapid, cost effective path to significant savings and increased profitability</span>. We empower your business through <span class="text-blue-600">one-stop cohesive integration</span> of <span>Business Intelligence</span>, <span>Automation</span>, <span>Mobile Apps</span> and <span>AI Chatbots</span>.
+                Our AI powered digital solutions offer a <span class="text-blue-600">rapid, cost effective path to significant savings and increased profitability</span>. We empower your business through <span class="text-6366f1-600">one-stop cohesive integration</span> of <span>Business Intelligence</span>, <span>Automation</span>, <span>Mobile Apps</span> and <span>AI Chatbots</span>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
@@ -472,34 +472,35 @@
         const heroCtaButton = document.getElementById('heroCtaButton');
         const footerCtaButton = document.getElementById('footerCtaButton');
         const roiCtaButton = document.getElementById('roiCtaButton');
-        const whitepaperCtaButton = document.getElementById('whitepaperCtaButton'); // New whitepaper CTA button
-        const contactFormContainer = document.getElementById('contactFormContainer'); // The inline form container
+        const whitepaperCtaButton = document.getElementById('whitepaperCtaButton');
+        const contactFormContainer = document.getElementById('contactFormContainer');
 
         const contactForm = document.getElementById('contactForm');
         const submissionDateInput = document.getElementById('formattedConsultationDate');
         const messageBox = document.getElementById('messageBox');
-        const messageTitle = document.getElementById('messageTitle'); // Get the new message title element
+        const messageTitle = document.getElementById('messageTitle');
         const messageBoxText = document.getElementById('messageBoxText');
         const closeMessageBoxButton = document.getElementById('closeMessageBoxButton');
         const phoneInput = document.getElementById('phone');
         const phoneError = document.getElementById('phoneError');
-        const emailInput = document.getElementById('email'); // New Email Input element
-        const emailError = document.getElementById('emailError'); // New Email Error element
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
         const loadingOverlay = document.getElementById('loadingOverlay');
-        const downloadWhitepaperCheckbox = document.getElementById('downloadWhitepaper'); // New checkbox element
+        const downloadWhitepaperCheckbox = document.getElementById('downloadWhitepaper');
 
         // Navigation links
         const navOurServices = document.getElementById('navOurServices');
         const navGetStarted = document.getElementById('navGetStarted');
 
-        // New About Us elements
+        // About Us elements
         const navAboutUs = document.getElementById('navAboutUs');
         const aboutUsDialog = document.getElementById('aboutUsDialog');
         const closeAboutUsDialogButton = document.getElementById('closeAboutUsDialogButton');
 
-        // Define the whitepaper download link
-        // UPDATED: Changed the whitepaper link to the new GitHub raw file URL
-        const whitepaperDownloadLink = 'https://raw.githubusercontent.com/AICognitivelab/website/98d2cb63c7f20e097da652893f0d58a063af0503/Whitepaper.pdf';
+        // Define the whitepaper download link (UPDATED TO RAW GITHUB URL)
+        const whitepaperDownloadLink = 'https://raw.githubusercontent.com/AICognitivelab/website/main/Whitepaper.pdf'; 
+        // Note: 'main' is often the default branch, but confirm yours.
+        // If your PDF is in a subfolder, add that path, e.g., 'https://raw.githubusercontent.com/AICognitivelab/website/main/docs/Whitepaper.pdf'
 
         // Function to set today's date in 'mmm-dd-yyyy' format for submission
         function setTodayDateForSubmission() {
@@ -562,24 +563,21 @@
 
         navGetStarted.addEventListener('click', function(e) {
             e.preventDefault();
-            scrollToSection('contactFormContainer'); // Scroll to the Contact Form
+            scrollToSection('contactFormContainer'); // Scroll to the contact form
         });
 
-        // Event Listener for the new About Us button
-        navAboutUs.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default link behavior
-            aboutUsDialog.classList.add('show');
-        });
-
-        // Event Listener to close the About Us dialog
-        closeAboutUsDialogButton.addEventListener('click', function() {
-            aboutUsDialog.classList.remove('show');
-        });
-
-        // Function to show custom message box
-        function showMessageBox(title, message) {
+        // Function to show custom message box (updated to set title color)
+        function showMessageBox(title, message, isSuccess = true) {
             messageTitle.textContent = title;
             messageBoxText.textContent = message;
+            messageTitle.classList.remove('text-green-600', 'text-red-600', 'text-yellow-600'); // Clear existing classes
+            if (isSuccess === true) {
+                messageTitle.classList.add('text-green-600');
+            } else if (isSuccess === false) {
+                messageTitle.classList.add('text-red-600');
+            } else { // For validation or neutral messages
+                messageTitle.classList.add('text-yellow-600');
+            }
             messageBox.classList.add('show');
         }
 
@@ -588,11 +586,11 @@
             messageBox.classList.remove('show');
         });
 
-        // Phone number validation
+        // Phone number validation (for real-time feedback)
         phoneInput.addEventListener('input', function() {
-            // Regex to allow digits and '+' only
-            const phonePattern = /^[\d\+]*$/;
-            if (!phonePattern.test(phoneInput.value)) {
+            // Relaxed pattern for immediate feedback, stricter validation on submit
+            const phonePattern = /^[\d\s\-\(\)]*$/; 
+            if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
                 phoneError.classList.remove('hidden');
             } else {
                 phoneError.classList.add('hidden');
@@ -601,7 +599,6 @@
 
         // Email validation function
         function validateEmail() {
-            // Basic regex for email validation (more robust than native HTML5 for custom error display)
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(emailInput.value)) {
                 emailError.classList.remove('hidden');
@@ -628,33 +625,53 @@
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Validate phone number before submission
-            const phonePattern = /^[\d\+]*$/;
-            if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
-                showMessageBox('Input Error', 'Please enter a valid phone number (digits and \'+\' only).');
-                return; // Stop form submission
+            // --- Comprehensive Client-Side Validation ---
+            const name = document.getElementById('name').value.trim();
+            const email = emailInput.value.trim();
+            const organizationSize = document.getElementById('organizationSize').value;
+            const interestedIn = document.getElementById('interestedIn').value;
+            const message = document.getElementById('message').value.trim();
+            const phone = phoneInput.value.trim();
+
+            if (!name || !email || !organizationSize || !interestedIn || !message) {
+                showMessageBox('Validation Error', 'Please fill in all required fields (Name, Email, Organization Size, Interested In, Your Message).', null); // null for a neutral/validation color
+                return;
             }
 
-            // Validate email before submission (new)
-            if (!validateEmail()) {
-                showMessageBox('Input Error', 'Please enter a valid email address.');
-                return; // Stop form submission
+            if (!validateEmail()) { // Use the existing email validation function
+                showMessageBox('Validation Error', 'Please enter a valid email address.', null);
+                return;
             }
+
+            // Stricter phone validation for submission
+            const phoneStrictPattern = /^\+?[\d\s\-()]+$/; 
+            if (phone && !phoneStrictPattern.test(phone)) {
+                showMessageBox('Validation Error', 'Please enter a valid phone number (digits, "+", "-", "(", ")" only).', null);
+                return;
+            }
+            // --- End of Validation ---
 
             showLoading(); // Show loading spinner
 
-            const formData = new FormData(contactForm);
-            // Add a field to indicate whitepaper download intent
+            // Step 1: Initiate whitepaper download if checked (BEFORE Web3Forms submission)
             if (downloadWhitepaperCheckbox.checked) {
-                formData.append('Whitepaper Download Requested', 'Yes');
-            } else {
-                formData.append('Whitepaper Download Requested', 'No');
+                const link = document.createElement('a');
+                link.href = whitepaperDownloadLink;
+                link.setAttribute('download', 'AICognitiveLab_Whitepaper.pdf'); // Suggested filename for download
+                document.body.appendChild(link); // Append to body to make it clickable
+                link.click(); // Programmatically click the link
+                document.body.removeChild(link); // Clean up the temporary link
             }
+
+            // Step 2: Send form data via Web3Forms
+            const formData = new FormData(contactForm);
+            // Append the whitepaper request status to the form data for Web3Forms
+            formData.append('Whitepaper Download Requested', downloadWhitepaperCheckbox.checked ? 'Yes' : 'No');
 
             try {
                 const response = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
-                    body: formData,
+                    body: formData, // Sending FormData directly for Web3Forms
                     headers: {
                         'Accept': 'application/json'
                     }
@@ -663,27 +680,30 @@
                 hideLoading(); // Hide loading spinner
 
                 if (response.ok) {
-                    showMessageBox('Success!', 'Your message has been sent successfully!');
-                    contactForm.reset();
-                    setTodayDateForSubmission(); // Reset date
-                    // If whitepaper was requested, initiate download after successful form submission
-                    if (downloadWhitepaperCheckbox.checked) {
-                        const link = document.createElement('a');
-                        link.href = whitepaperDownloadLink;
-                        link.setAttribute('download', 'AICognitiveLab_Whitepaper.pdf');
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }
+                    showMessageBox('Success!', 'Your message has been sent successfully! We will be in touch shortly.', true);
+                    contactForm.reset(); // Clear the form
+                    setTodayDateForSubmission(); // Reset the date
                 } else {
                     const data = await response.json();
-                    showMessageBox('Error!', data.message || 'There was an error sending your message.');
+                    console.error('Web3Forms Error:', data);
+                    showMessageBox('Submission Failed!', data.message || 'There was an error sending your message. Please try again.', false);
                 }
             } catch (error) {
                 hideLoading(); // Hide loading spinner
-                console.error('Submission error:', error);
-                showMessageBox('Error!', 'There was an error sending your message. Please try again later.');
+                console.error('Network or Fetch Error:', error);
+                showMessageBox('Error!', 'Could not connect to the server. Please check your internet connection and try again.', false);
             }
+        });
+
+        // Event listener for opening the About Us dialog
+        navAboutUs.addEventListener('click', function(e) {
+            e.preventDefault();
+            aboutUsDialog.classList.add('show');
+        });
+
+        // Event listener for closing the About Us dialog
+        closeAboutUsDialogButton.addEventListener('click', function() {
+            aboutUsDialog.classList.remove('show');
         });
     </script>
 </body>
