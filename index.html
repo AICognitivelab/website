@@ -390,7 +390,7 @@
                 </div>
                 <div>
                     <label for="phone" class="block text-gray-700 text-sm font-medium mb-1">Phone Number (Optional)</label>
-                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567">
+                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 555 123 4567">
                     <div id="phoneError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid phone number (digits and '+' only).</div>
                 </div>
                 <div>
@@ -588,8 +588,8 @@
 
         // Phone number validation (for real-time feedback)
         phoneInput.addEventListener('input', function() {
-            // Relaxed pattern for immediate feedback, stricter validation on submit
-            const phonePattern = /^[\d\s\-\(\)]*$/; 
+            // Updated pattern: optional leading '+', followed by only digits.
+            const phonePattern = /^\+?\d*$/; 
             if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
                 phoneError.classList.remove('hidden');
             } else {
@@ -644,9 +644,10 @@
             }
 
             // Stricter phone validation for submission
-            const phoneStrictPattern = /^\+?[\d\s\-()]+$/; 
+            // Updated pattern: optional leading '+', followed by only digits.
+            const phoneStrictPattern = /^\+?\d+$/; // At least one digit must follow if '+' is present, or if no '+'
             if (phone && !phoneStrictPattern.test(phone)) {
-                showMessageBox('Validation Error', 'Please enter a valid phone number (digits, "+", "-", "(", ")" only).', null);
+                showMessageBox('Validation Error', 'Please enter a valid phone number (only digits and an optional leading "+" allowed).', null);
                 return;
             }
             // --- End of Validation ---
